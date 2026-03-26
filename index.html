@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ball's Money ⚽💰</title>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Sarabun:wght@300;400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Sarabun:wght@300;400;600;700&display=swap)" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Sarabun', sans-serif; background-color: #0f172a; color: #f8fafc; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; padding-bottom: env(safe-area-inset-bottom); }
+        .glass-panel { background: rgba(30, 41, 59, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); }
+        .btn-gradient-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); transition: transform 0.1s; }
+        .btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); transition: transform 0.1s; }
+        .btn-gradient-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); transition: transform 0.1s; }
+        .btn-gradient-amber { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: transform 0.1s; }
+        button:active { transform: scale(0.95); }
+        .nav-item { flex-direction: column; align-items: center; display: flex; font-size: 10px; color: #64748b; transition: all 0.3s ease; padding: 0.5rem; }
+        .nav-item.active { color: #10b981; transform: translateY(-2px); }
+        input, select, textarea { background-color: rgba(15, 23, 42, 0.6) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; border-radius: 1rem !important; padding: 1rem !important; width: 100%; font-size: 16px; appearance: none; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #10b981 !important; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+        ::-webkit-scrollbar { display: none; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pt-6 px-4 pb-32">
+
+    <div class="max-w-md mx-auto relative h-full">
+        <header class="flex justify-between items-center mb-6 animate-fade-in">
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Ball's Money <span class="text-xl">⚽💰</span></h1>
+                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Live Sync & Auto FX (V6)</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="refreshAll()" class="p-3 bg-slate-800/80 rounded-full text-blue-400 backdrop-blur-md active:rotate-180 transition-transform">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>
+                </button>
+                <button onclick="toggleSettings()" class="p-3 bg-slate-800/80 rounded-full text-slate-300 backdrop-blur-md">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <section id="dashboard-tab" class="space-y-5 animate-fade-in">
+                <div class="glass-panel p-8 text-center relative overflow-hidden">
+                    <p class="text-slate-400 text-[11px] uppercase tracking-widest mb-2 font-bold">ความมั่งคั่งสุทธิ (Net Worth)</p>
+                    <h2 id="totalNetWorth" class="text-5xl font-bold text-white tracking-tighter">฿ 0</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="glass-panel p-4 border-t-2 border-t-blue-500/60">
+                        <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">ทรัพย์สิน (Asset)</p>
+                        <p id="dashInvest" class="text-xl font-bold text-blue-400">฿ 0</p>
+                    </div>
+                    <div class="glass-panel p-4 border-t-2 border-t-red-500/60">
+                        <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">หนี้สิน (Debt)</p>
+                        <p id="dashDebt" class="text-xl font-bold text-red-400">-฿ 0</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 flex justify-between items-center border-l-4 border-amber-500">
+                    <div>
+                        <p class="text-[10px] text-amber-200/70 uppercase font-bold">แผนมรดก (Legacy)</p>
+                        <p id="dashLegacy" class="text-xl font-bold text-amber-400">฿ 0</p>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-5 h-64 relative">
+                    <p class="text-xs font-bold text-slate-400 absolute top-4 left-5">สัดส่วนการเงิน</p>
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </section>
+
+            <section id="invest-tab" class="hidden space-y-4 animate-fade-in">
+                <div class="flex justify-between items-end px-1">
+                    <h3 class="text-xl font-bold text-blue-400">📈 พอร์ตลงทุน</h3>
+                    <button onclick="openForm('investForm')" class="text-[10px] font-bold bg-blue-500/20 text-blue-400 px-4 py-2 rounded-full">+ Add Asset</button>
+                </div>
+                <div class="text-[10px] text-slate-400 px-2">💡 หุ้นไทยใส่ <b>BKK:</b> นำหน้า (เช่น BKK:PTT) | หุ้นนอก/คริปโต (เช่น AAPL, BTCUSD) ระบบจะคูณค่าเงินบาทให้อัตโนมัติ</div>
+                <div id="investList" class="space-y-3 pb-2"></div>
+            </section>
+
+            <section id="debt-tab" class="hidden space-y-4 animate-fade-in">
+                <div class="flex justify-between items-end px-1">
+                    <h3 class="text-xl font-bold text-red-400">💸 ภาระหนี้สิน</h3>
+                    <button onclick="openForm('debtForm')" class="text-[10px] font-bold bg-red-500/20 text-red-400 px-4 py-2 rounded-full">+ Add Debt</button>
+                </div>
+                <div id="debtList" class="space-y-3 pb-2"></div>
+            </section>
+
+            <section id="legacy-tab" class="hidden space-y-4 animate-fade-in">
+                <div class="flex justify-between items-end px-1">
+                    <h3 class="text-xl font-bold text-amber-400">🛡️ แผนส่งต่อมรดก</h3>
+                    <button onclick="openForm('legacyForm')" class="text-[10px] font-bold bg-amber-500/20 text-amber-400 px-4 py-2 rounded-full">+ Add Legacy</button>
+                </div>
+                <div id="legacyList" class="space-y-3 pb-2"></div>
+            </section>
+
+            <section id="history-tab" class="hidden space-y-4 animate-fade-in">
+                <h3 class="text-xl font-bold text-slate-300 px-1">📋 ประวัติธุรกรรม</h3>
+                <div id="historyList" class="glass-panel divide-y divide-slate-800/60 pb-2"></div>
+            </section>
+        </main>
+    </div>
+
+    <div class="fixed bottom-6 left-0 right-0 px-4 z-40">
+        <nav class="max-w-md mx-auto glass-panel bg-slate-900/95 flex justify-around py-2 px-1 shadow-[0_20px_50px_rgba(0,0,0,0.8)] items-end">
+            <button onclick="switchTab('dashboard')" class="nav-item active flex-1" id="nav-dashboard">
+                <span class="text-[22px] mb-1">🏠</span> <span class="font-bold">Home</span>
+            </button>
+            <button onclick="switchTab('invest')" class="nav-item flex-1" id="nav-invest">
+                <span class="text-[22px] mb-1">📈</span> <span class="font-bold">Invest</span>
+            </button>
+            <div class="relative w-16 flex justify-center">
+                <button onclick="openForm('recordForm')" class="absolute bottom-2 btn-gradient-green text-slate-900 w-14 h-14 rounded-full flex items-center justify-center border-[3px] border-slate-900 z-50">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+            <button onclick="switchTab('debt')" class="nav-item flex-1" id="nav-debt">
+                <span class="text-[22px] mb-1">💸</span> <span class="font-bold">Debt</span>
+            </button>
+            <button onclick="switchTab('history')" class="nav-item flex-1" id="nav-history">
+                <span class="text-[22px] mb-1">📋</span> <span class="font-bold">History</span>
+            </button>
+        </nav>
+    </div>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] flex flex-col items-center justify-center hidden">
+        <div class="w-12 h-12 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+        <p class="text-emerald-400 font-bold tracking-widest uppercase text-xs" id="loadingText">Processing...</p>
+    </div>
+
+    <div id="modalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden z-[100] p-4 flex items-center justify-center overflow-y-auto">
+        <div id="settingForm" class="glass-panel p-6 hidden w-full max-w-sm m-auto">
+            <h3 class="text-xl font-bold mb-2 text-white">⚙️ ตั้งค่าระบบ</h3>
+            <input id="sysUrl" type="url" placeholder="[https://script.google.com/](https://script.google.com/)..." class="mb-4 text-xs">
+            <div class="flex gap-2"><button onclick="saveSettings()" class="flex-1 btn-gradient-green py-3 rounded-xl font-bold text-white">บันทึก</button><button onclick="closeModal()" class="flex-1 bg-slate-800 py-3 rounded-xl text-white">ปิด</button></div>
+        </div>
+
+        <div id="recordForm" class="glass-panel p-6 hidden w-full max-w-sm m-auto border-t-4 border-emerald-500">
+            <h3 class="text-xl font-bold mb-4 text-emerald-400">บันทึกธุรกรรม</h3>
+            <div class="space-y-4">
+                <input id="recItem" placeholder="รายการ"><input id="recAmount" type="number" placeholder="จำนวนเงิน">
+                <div class="grid grid-cols-2 gap-3"><select id="recCat"><option value="Income">รายรับ</option><option value="Food">อาหาร</option><option value="Transport">เดินทาง</option><option value="Debt">จ่ายหนี้</option><option value="Invest">ลงทุน</option></select><select id="recType"><option value="Expense">รายจ่าย</option><option value="Income">รายรับ</option></select></div>
+                <div class="flex gap-2"><button onclick="submitData('Transactions', 'record')" class="flex-[2] btn-gradient-green py-3 rounded-xl font-bold text-white">บันทึก</button><button onclick="closeModal()" class="flex-[1] bg-slate-800 py-3 rounded-xl text-white">ยกเลิก</button></div>
+            </div>
+        </div>
+
+        <div id="investForm" class="glass-panel p-6 hidden w-full max-w-sm m-auto border-t-4 border-blue-500">
+            <h3 class="text-xl font-bold mb-4 text-blue-400">บันทึกสินทรัพย์</h3>
+            <div class="space-y-4">
+                <input type="hidden" id="invRow"><input id="invTicker" placeholder="Ticker (เช่น BKK:PTT, AAPL)">
+                <div class="grid grid-cols-2 gap-3"><input id="invQty" type="number" placeholder="จำนวน"><input id="invCost" type="number" placeholder="ทุน/หน่วย"></div>
+                <input id="invPrice" type="number" placeholder="ราคาปัจจุบัน (ใส่เองได้)">
+                <div class="flex gap-2"><button onclick="submitData('Investment', 'invest')" class="flex-[2] btn-gradient-blue py-3 rounded-xl font-bold text-white">บันทึก</button><button onclick="closeModal()" class="flex-[1] bg-slate-800 py-3 rounded-xl text-white">ยกเลิก</button></div>
+            </div>
+        </div>
+
+        <div id="debtForm" class="glass-panel p-6 hidden w-full max-w-sm m-auto border-t-4 border-red-500">
+            <h3 class="text-xl font-bold mb-4 text-red-400">บันทึกหนี้สิน</h3>
+            <div class="space-y-4">
+                <input type="hidden" id="dbtRow"><input id="dbtCreditor" placeholder="ชื่อสินเชื่อ"><input id="dbtPrincipal" type="number" placeholder="ยอดจัด/เงินต้น">
+                <div class="grid grid-cols-2 gap-3"><input id="dbtRate" type="number" placeholder="ดอกเบี้ย % ต่อปี"><input id="dbtMonths" type="number" placeholder="ผ่อนกี่เดือน"></div>
+                <div class="bg-slate-900/50 p-2 text-center rounded-xl"><p class="text-[10px] text-slate-400">ค่างวด (EMI)</p><p id="calcEmi" class="text-xl font-bold text-red-400">-</p></div>
+                <div class="flex gap-2"><button onclick="submitData('Debt', 'debt')" class="flex-[2] btn-gradient-red py-3 rounded-xl font-bold text-white">บันทึก</button><button onclick="closeModal()" class="flex-[1] bg-slate-800 py-3 rounded-xl text-white">ยกเลิก</button></div>
+            </div>
+        </div>
+
+        <div id="legacyForm" class="glass-panel p-6 hidden w-full max-w-sm m-auto border-t-4 border-amber-500">
+            <h3 class="text-xl font-bold mb-4 text-amber-500">บันทึกมรดก</h3>
+            <div class="space-y-4">
+                <select id="legType"><option value="ประกันชีวิต">ประกันชีวิต</option><option value="สำรองเลี้ยงชีพ">PVD</option></select>
+                <input id="legProvider" placeholder="บริษัท/สถาบัน"><input id="legAmount" type="number" placeholder="วงเงิน"><input id="legBeneficiary" placeholder="ผู้รับผลประโยชน์">
+                <div class="flex gap-2"><button onclick="submitData('Legacy', 'legacy')" class="flex-[2] btn-gradient-amber py-3 rounded-xl font-bold text-white">บันทึก</button><button onclick="closeModal()" class="flex-[1] bg-slate-800 py-3 rounded-xl text-white">ปิด</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scriptUrl = localStorage.getItem('balls_money_url') || '';
+        let appData = { transactions: [], investments: [], legacy: [], debts: [] };
+        let myChart = null;
+
+        window.onload = () => {
+            Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = "'Inter', 'Sarabun', sans-serif";
+            if (scriptUrl) refreshAll(); else openForm('settingForm');
+        };
+
+        const fm = (val) => parseFloat(val||0).toLocaleString('en-US', {maximumFractionDigits:2});
+        
+        async function refreshAll() {
+            showLoading("Syncing...");
+            try {
+                const res = await fetch(scriptUrl);
+                if(!res.ok) throw new Error("Err");
+                appData = await res.json(); renderAllViews();
+            } catch (e) { alert("เชื่อมต่อล้มเหลว ตรวจสอบ URL"); } finally { hideLoading(); }
+        }
+
+        function renderAllViews() {
+            const invTot = (appData.investments||[]).reduce((s, i) => s + (parseFloat(i.current_price)*parseFloat(i.qty)||0), 0);
+            const legTot = (appData.legacy||[]).reduce((s, i) => s + (parseFloat(i.amount)||0), 0);
+            const debtTot = (appData.debts||[]).reduce((s, i) => s + (parseFloat(i.remaining)||parseFloat(i.principal)||0), 0);
+            const net = invTot - debtTot;
+
+            document.getElementById('totalNetWorth').innerText = `฿ ${fm(net)}`;
+            document.getElementById('dashInvest').innerText = `฿ ${fm(invTot)}`;
+            document.getElementById('dashDebt').innerText = `-฿ ${fm(debtTot)}`;
+            document.getElementById('dashLegacy').innerText = `฿ ${fm(legTot)}`;
+
+            document.getElementById('investList').innerHTML = appData.investments.map(i => `
+                <div class="glass-panel p-4 flex justify-between border-l-4 ${i.current_price>=i.cost_basis?'border-blue-500':'border-red-500'}">
+                    <div><p class="font-bold text-white">${i.ticker}</p><p class="text-[10px] text-slate-400">Qty: ${i.qty} | ทุน: ฿${fm(i.cost_basis)}</p></div>
+                    <div class="text-right"><p class="font-bold text-blue-400">฿ ${fm(i.current_price*i.qty)}</p>
+                    <button onclick="editInvest(${i.row},'${i.ticker}',${i.qty},${i.current_price},${i.cost_basis})" class="text-[9px] bg-slate-800 px-2 py-1 rounded mt-1">อัปเดต @${fm(i.current_price)}</button></div>
+                </div>`).join('') || '<p class="text-center text-slate-500 p-4">ไม่มีข้อมูล</p>';
+
+            document.getElementById('debtList').innerHTML = appData.debts.map(d => `
+                <div class="glass-panel p-4 border-l-4 border-red-500">
+                    <div class="flex justify-between mb-2"><div><p class="font-bold text-white">${d.creditor}</p><p class="text-[10px] text-slate-400">ด/บ ${d.interest_rate}% | ผ่อน ${d.months}ด.</p></div>
+                    <div class="text-right"><p class="text-[9px] text-slate-400">ยอดคงเหลือ</p><p class="font-bold text-red-400">฿ ${fm(d.remaining||d.principal)}</p></div></div>
+                    <div class="bg-red-900/10 p-2 rounded-lg flex justify-between"><p class="text-[10px] text-slate-400">ค่างวด</p><p class="font-bold text-red-300">฿ ${fm(d.monthly_pay)}</p></div>
+                    <button onclick="updateDebtBal(${d.row}, ${d.remaining||d.principal})" class="w-full mt-2 py-1 text-[10px] bg-slate-800 rounded">อัปเดตยอดคงเหลือ</button>
+                </div>`).join('') || '<p class="text-center text-slate-500 p-4">ไม่มีหนี้สิน</p>';
+
+            document.getElementById('legacyList').innerHTML = appData.legacy.map(l => `
+                <div class="glass-panel p-4 border-l-4 border-amber-500">
+                    <div class="flex justify-between"><span class="text-[9px] bg-amber-500/20 text-amber-500 px-2 rounded">${l.type}</span><span class="font-bold text-white">฿ ${fm(l.amount)}</span></div>
+                    <p class="text-sm font-bold mt-1">${l.provider}</p><p class="text-[10px] text-slate-400">ผู้รับ: ${l.beneficiary||'-'}</p>
+                </div>`).join('') || '<p class="text-center text-slate-500 p-4">ไม่มีข้อมูล</p>';
+
+            document.getElementById('historyList').innerHTML = appData.transactions.map(t => `
+                <div class="flex justify-between p-4"><div class="flex gap-3"><div class="text-2xl">${t.type==='Income'?'💰':'📋'}</div>
+                <div><p class="font-bold text-sm text-slate-200">${t.item}</p><p class="text-[10px] text-slate-500">${new Date(t.date).toLocaleDateString('en-GB')}</p></div></div>
+                <p class="font-bold ${t.type==='Income'?'text-emerald-400':'text-slate-300'}">${t.type==='Income'?'+':'-'}฿${fm(t.amount)}</p></div>`).join('') || '<p class="text-center text-slate-500 p-4">ไม่มีประวัติ</p>';
+
+            drawChart(invTot, debtTot);
+        }
+
+        function drawChart(inv, debt) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['ทรัพย์สิน', 'หนี้สิน'], datasets: [{ data: [inv, debt], backgroundColor: ['#3b82f6', '#ef4444'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'right', labels: { color:'#cbd5e1'} } } } });
+        }
+
+        // Logic
+        const calcEmi = () => {
+            const p=parseFloat(document.getElementById('dbtPrincipal').value)||0, r=parseFloat(document.getElementById('dbtRate').value)||0, n=parseInt(document.getElementById('dbtMonths').value)||0;
+            if(p>0&&r>0&&n>0) { const emi = (p*(r/1200)*Math.pow(1+r/1200,n))/(Math.pow(1+r/1200,n)-1); document.getElementById('calcEmi').innerText=`฿ ${fm(emi)}`; return emi; }
+            document.getElementById('calcEmi').innerText='-'; return 0;
+        };
+        ['dbtPrincipal','dbtRate','dbtMonths'].forEach(id => document.getElementById(id).addEventListener('input', calcEmi));
+
+        function updateDebtBal(row, cur) { const nb = prompt(`ยอดหนี้คงเหลือใหม่:`, cur); if(nb && !isNaN(nb)) submitData('Debt','updateDebt',{row:row, remaining:parseFloat(nb)}); }
+        function editInvest(row, ticker, qty, price, cost) { openForm('investForm'); document.getElementById('invRow').value=row; document.getElementById('invTicker').value=ticker; document.getElementById('invTicker').disabled=true; document.getElementById('invQty').value=qty; document.getElementById('invCost').value=cost; document.getElementById('invPrice').value=price; }
+        
+        function switchTab(tab) { ['dashboard','invest','legacy','history','debt'].forEach(t => { document.getElementById(`${t}-tab`).classList.add('hidden'); if(document.getElementById(`nav-${t}`)) document.getElementById(`nav-${t}`).classList.remove('active'); }); document.getElementById(`${tab}-tab`).classList.remove('hidden'); if(document.getElementById(`nav-${tab}`)) document.getElementById(`nav-${tab}`).classList.add('active'); window.scrollTo(0,0); }
+        function openForm(id) { document.getElementById('modalOverlay').classList.remove('hidden'); document.getElementById(id).classList.remove('hidden'); if(id==='investForm'){document.getElementById('invRow').value='';document.getElementById('invTicker').disabled=false;} }
+        function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); document.querySelectorAll('#modalOverlay > div').forEach(el => el.classList.add('hidden')); }
+        function saveSettings() { scriptUrl = document.getElementById('sysUrl').value.trim(); localStorage.setItem('balls_money_url', scriptUrl); closeModal(); refreshAll(); }
+        function showLoading(t) { document.getElementById('loadingText').innerText = t; document.getElementById('loadingOverlay').classList.remove('hidden'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
+
+        async function submitData(target, formType, custom = null) {
+            if(!scriptUrl) return alert("ตั้งค่า URL ก่อน");
+            let data = { targetSheet: target };
+            if(custom) { data.action='updateDebt'; data.row=custom.row; data.remaining=custom.remaining; }
+            else if(formType==='record') { data.item=document.getElementById('recItem').value; data.amount=parseFloat(document.getElementById('recAmount').value); data.category=document.getElementById('recCat').value; data.type=document.getElementById('recType').value; }
+            else if(formType==='invest') { data.row=document.getElementById('invRow').value; data.action=data.row?'updatePrice':'add'; data.ticker=document.getElementById('invTicker').value.toUpperCase(); data.qty=parseFloat(document.getElementById('invQty').value)||0; data.cost_basis=parseFloat(document.getElementById('invCost').value)||0; data.current_price=parseFloat(document.getElementById('invPrice').value)||0; }
+            else if(formType==='legacy') { data.type=document.getElementById('legType').value; data.provider=document.getElementById('legProvider').value; data.amount=parseFloat(document.getElementById('legAmount').value)||0; data.beneficiary=document.getElementById('legBeneficiary').value; }
+            else if(formType==='debt') { data.creditor=document.getElementById('dbtCreditor').value; data.principal=parseFloat(document.getElementById('dbtPrincipal').value)||0; data.interest_rate=parseFloat(document.getElementById('dbtRate').value)||0; data.months=parseInt(document.getElementById('dbtMonths').value)||0; data.monthly_pay=calcEmi(); data.remaining=data.principal; }
+
+            closeModal(); showLoading("Saving...");
+            try { await fetch(scriptUrl, {method:'POST', mode:'no-cors', body:JSON.stringify(data)}); document.querySelectorAll('input:not([type="hidden"])').forEach(e=>e.value=''); await refreshAll(); } 
+            catch(e) { alert("Error"); hideLoading(); }
+        }
+    </script>
+</body>
+</html>
