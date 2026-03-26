@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ball's Money ⚽💰</title>
-    <!-- แก้ลิงก์ให้ถูกต้อง ไม่มีวงเล็บแล้ว -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -33,7 +32,7 @@
         <header class="flex justify-between items-center mb-6 animate-fade-in">
             <div>
                 <h1 class="text-2xl font-bold text-white tracking-tight">Ball's Money <span class="text-xl">⚽💰</span></h1>
-                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Live Sync & Auto FX (V6)</p>
+                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Live Sync & Auto FX (V7)</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="refreshAll()" class="p-3 bg-slate-800/80 rounded-full text-blue-400 backdrop-blur-md active:rotate-180 transition-transform">
@@ -69,7 +68,13 @@
                 <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
                 <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase mb-1">ความมั่งคั่งสุทธิ (Net Worth)</p>
                 <h2 id="netWorthText" class="text-4xl font-bold text-white tracking-tight">฿0.00</h2>
-                <div class="flex justify-center gap-6 mt-4 pt-4 border-t border-slate-700/50">
+                
+                <!-- 🌟 เพิ่มช่องเงินสด และจัดเรียงใหม่ -->
+                <div class="flex justify-center gap-5 mt-4 pt-4 border-t border-slate-700/50">
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase mb-1">เงินสด</p>
+                        <p id="totalCashText" class="text-green-400 font-bold">฿0.00</p>
+                    </div>
                     <div>
                         <p class="text-[10px] text-slate-500 uppercase mb-1">การลงทุน</p>
                         <p id="totalInvestText" class="text-blue-400 font-bold">฿0.00</p>
@@ -115,7 +120,7 @@
                 <div class="space-y-4">
                     <div>
                         <label class="text-xs text-slate-400 ml-1 mb-1 block">ชื่อรายการ</label>
-                        <input id="item" type="text" placeholder="เช่น กินข้าว, เติมน้ำมัน, ซื้อหุ้น">
+                        <input id="item" type="text" placeholder="เช่น กินข้าว, เติมน้ำมัน, เงินเดือน">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 ml-1 mb-1 block">จำนวนเงิน (บาท)</label>
@@ -344,12 +349,16 @@
             let totalInvest = 0;
             let totalDebt = 0;
             let totalLegacy = 0;
+            let totalCash = 0; 
 
-            // Calc Expenses
+            // Calc Expenses & Income
             if(data.transactions) {
                 data.transactions.forEach(t => {
                     if(t.type === 'Expense') {
                         expenses[t.category] = (expenses[t.category] || 0) + Number(t.amount);
+                        totalCash -= Number(t.amount);
+                    } else if (t.type === 'Income') {
+                        totalCash += Number(t.amount);
                     }
                 });
             }
@@ -371,9 +380,11 @@
                 data.legacy.forEach(l => { totalLegacy += Number(l.amount); });
             }
 
-            let netWorth = totalInvest - totalDebt; // Cash in transactions can be added here if tracked
+            // Net Worth ใหม่: ลงทุน + เงินสด - หนี้สิน
+            let netWorth = totalInvest + totalCash - totalDebt; 
 
             document.getElementById('netWorthText').innerText = '฿' + formatB(netWorth);
+            document.getElementById('totalCashText').innerText = '฿' + formatB(totalCash);
             document.getElementById('totalInvestText').innerText = '฿' + formatB(totalInvest);
             document.getElementById('totalDebtText').innerText = '฿' + formatB(totalDebt);
             document.getElementById('totalLegacyText').innerText = '฿' + formatB(totalLegacy);
@@ -428,7 +439,7 @@
                         </div>
                     </div>`;
                     histList.innerHTML += html;
-                    if(index < 3) recentList.innerHTML += html; // Show only top 3 in dashboard
+                    if(index < 3) recentList.innerHTML += html; 
                 });
             }
 
@@ -508,7 +519,7 @@
                 setTimeout(() => {
                     showLoading(false);
                     alert("บันทึกสำเร็จ!");
-                    fetchData(); // Refresh data
+                    fetchData(); 
                 }, 1500);
             }).catch(e => {
                 showLoading(false);
