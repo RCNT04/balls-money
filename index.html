@@ -12,9 +12,7 @@
         body { font-family: 'Inter', 'Sarabun', sans-serif; background-color: #0f172a; color: #f8fafc; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; padding-bottom: env(safe-area-inset-bottom); }
         .glass-panel { background: rgba(30, 41, 59, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); }
         .btn-gradient-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); transition: transform 0.1s; }
-        .btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); transition: transform 0.1s; }
         .btn-gradient-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); transition: transform 0.1s; }
-        .btn-gradient-amber { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: transform 0.1s; }
         button:active { transform: scale(0.95); }
         .nav-item { flex-direction: column; align-items: center; display: flex; font-size: 10px; color: #64748b; transition: all 0.3s ease; padding: 0.5rem; }
         .nav-item.active { color: #10b981; transform: translateY(-2px); }
@@ -32,7 +30,7 @@
         <header class="flex justify-between items-center mb-6 animate-fade-in">
             <div>
                 <h1 class="text-2xl font-bold text-white tracking-tight">Ball's Money <span class="text-xl">⚽💰</span></h1>
-                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Live Sync & Auto FX (V7)</p>
+                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Ultimate Version (THB/USD/EUR)</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="refreshAll()" class="p-3 bg-slate-800/80 rounded-full text-blue-400 backdrop-blur-md active:rotate-180 transition-transform">
@@ -46,10 +44,7 @@
 
         <!-- Settings Panel -->
         <div id="settingsPanel" class="hidden glass-panel mb-6 p-5 animate-fade-in border-green-500/30">
-            <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                ตั้งค่าระบบ (Apps Script)
-            </h3>
+            <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">⚙️ ตั้งค่าระบบ (Apps Script)</h3>
             <input id="scriptUrl" type="text" placeholder="วาง URL จาก Google Apps Script ที่นี่" class="mb-3 text-sm">
             <div class="flex gap-2">
                 <button onclick="saveSettings()" class="flex-1 btn-gradient-green text-white py-2.5 rounded-xl font-bold text-sm">บันทึก URL</button>
@@ -57,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Sync Indicator -->
         <div id="loading" class="text-xs text-green-400 text-center mb-4 hidden animate-pulse font-semibold tracking-wider">
             ⟳ กำลังเชื่อมต่อฐานข้อมูล...
         </div>
@@ -69,7 +63,6 @@
                 <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase mb-1">ความมั่งคั่งสุทธิ (Net Worth)</p>
                 <h2 id="netWorthText" class="text-4xl font-bold text-white tracking-tight">฿0.00</h2>
                 
-                <!-- 🌟 เพิ่มช่องเงินสด และจัดเรียงใหม่ -->
                 <div class="flex justify-center gap-5 mt-4 pt-4 border-t border-slate-700/50">
                     <div>
                         <p class="text-[10px] text-slate-500 uppercase mb-1">เงินสด</p>
@@ -92,7 +85,6 @@
                     <div class="w-full h-32 relative"><canvas id="expenseChart"></canvas></div>
                 </div>
                 <div class="glass-panel p-4 flex flex-col justify-center text-center bg-gradient-to-br from-indigo-900/40 to-slate-900/60">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400 mx-auto mb-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">ส่งต่อมรดก (Legacy)</p>
                     <p id="totalLegacyText" class="text-lg font-bold text-indigo-300 mt-1">฿0.00</p>
                 </div>
@@ -112,11 +104,7 @@
         <!-- ADD TRANSACTION -->
         <div id="addView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
-                <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">📝</div>
-                    บันทึกรายการด่วน
-                </h2>
-                <input id="rowId" type="hidden">
+                <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">📝 บันทึกรายการด่วน</h2>
                 <div class="space-y-4">
                     <div>
                         <label class="text-xs text-slate-400 ml-1 mb-1 block">ชื่อรายการ</label>
@@ -147,9 +135,7 @@
                             </select>
                         </div>
                     </div>
-                    <button id="saveBtn" onclick="saveData()" class="w-full btn-gradient-green text-white py-4 rounded-xl font-bold text-lg mt-4 shadow-lg flex justify-center items-center gap-2">
-                        บันทึกข้อมูล
-                    </button>
+                    <button id="saveBtn" onclick="saveData()" class="w-full btn-gradient-green text-white py-4 rounded-xl font-bold text-lg mt-4">บันทึกข้อมูล</button>
                 </div>
             </div>
         </div>
@@ -157,33 +143,18 @@
         <!-- INVESTMENT -->
         <div id="investView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
-                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">📈</div>
-                    พอร์ตการลงทุน
-                </h2>
-                <p class="text-xs text-slate-400 mb-6">หุ้นไทยใส่ BKK: นำหน้า (เช่น BKK:PTT) | หุ้นนอก/คริปโต (เช่น AAPL, BTCUSD) ระบบจะคูณค่าเงินบาทให้</p>
-                <div id="investList" class="space-y-3 mb-6">
-                    <p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>
-                </div>
-                <button onclick="promptAddInvest()" class="w-full bg-slate-800 text-blue-400 border border-blue-500/30 py-3 rounded-xl font-bold text-sm transition active:bg-slate-700">
-                    + เพิ่มสินทรัพย์
-                </button>
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">📈 พอร์ตการลงทุน</h2>
+                <p class="text-[10px] text-slate-400 mb-6">หุ้นไทยใส่ BKK: | ฝรั่งเศสใส่ EPA: | อื่นๆ/คริปโต (เช่น AAPL) ใส่ปกติ</p>
+                <div id="investList" class="space-y-3 mb-6"></div>
+                <button onclick="promptAddInvest()" class="w-full bg-slate-800 text-blue-400 border border-blue-500/30 py-3 rounded-xl font-bold text-sm">+ เพิ่มสินทรัพย์</button>
             </div>
         </div>
 
         <!-- DEBT -->
         <div id="debtView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
-                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">💸</div>
-                    ภาระหนี้สิน
-                </h2>
-                <p class="text-xs text-slate-400 mb-6">เพิ่มหนี้ใหม่ ระบบจะคำนวณค่างวดต่อเดือน (EMI) ให้อัตโนมัติ</p>
-                
-                <button onclick="document.getElementById('addDebtForm').classList.toggle('hidden')" class="w-full bg-slate-800 text-red-400 border border-red-500/30 py-3 rounded-xl font-bold text-sm transition active:bg-slate-700 mb-4">
-                    + เพิ่มหนี้ก้อนใหม่
-                </button>
-
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">💸 ภาระหนี้สิน</h2>
+                <button onclick="document.getElementById('addDebtForm').classList.toggle('hidden')" class="w-full bg-slate-800 text-red-400 border border-red-500/30 py-3 rounded-xl font-bold text-sm mb-4">+ เพิ่มหนี้ก้อนใหม่</button>
                 <div id="addDebtForm" class="hidden bg-slate-900/50 p-4 rounded-xl border border-slate-700 mb-6 space-y-3">
                     <input id="d_creditor" type="text" placeholder="ชื่อเจ้าหนี้ (เช่น บัตร KTC, บ้าน)">
                     <input id="d_principal" type="number" placeholder="ยอดหนี้ทั้งหมด (บาท)">
@@ -193,26 +164,15 @@
                     </div>
                     <button onclick="saveDebt()" class="w-full btn-gradient-red text-white py-3 rounded-xl font-bold text-sm">บันทึกหนี้สิน</button>
                 </div>
-
-                <div id="debtList" class="space-y-3">
-                    <p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>
-                </div>
+                <div id="debtList" class="space-y-3"></div>
             </div>
         </div>
 
         <!-- LEGACY -->
         <div id="legacyView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
-                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">🛡️</div>
-                    แผนส่งต่อมรดก
-                </h2>
-                <p class="text-xs text-slate-400 mb-6">ประกันชีวิต, สำรองเลี้ยงชีพ, ประกันสังคม</p>
-                
-                <button onclick="document.getElementById('addLegacyForm').classList.toggle('hidden')" class="w-full bg-slate-800 text-indigo-400 border border-indigo-500/30 py-3 rounded-xl font-bold text-sm transition active:bg-slate-700 mb-4">
-                    + เพิ่มข้อมูลกรมธรรม์
-                </button>
-
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">🛡️ แผนส่งต่อมรดก</h2>
+                <button onclick="document.getElementById('addLegacyForm').classList.toggle('hidden')" class="w-full bg-slate-800 text-indigo-400 border border-indigo-500/30 py-3 rounded-xl font-bold text-sm mb-4">+ เพิ่มข้อมูลกรมธรรม์</button>
                 <div id="addLegacyForm" class="hidden bg-slate-900/50 p-4 rounded-xl border border-slate-700 mb-6 space-y-3">
                     <select id="l_type">
                         <option value="ประกันชีวิต">ประกันชีวิต</option>
@@ -227,23 +187,15 @@
                     <textarea id="l_note" placeholder="โน้ตเพิ่มเติมให้คนข้างหลัง" class="h-20"></textarea>
                     <button onclick="saveLegacy()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold text-sm">บันทึกข้อมูล</button>
                 </div>
-
-                <div id="legacyList" class="space-y-3">
-                    <p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>
-                </div>
+                <div id="legacyList" class="space-y-3"></div>
             </div>
         </div>
 
         <!-- HISTORY -->
         <div id="historyView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
-                <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300">📋</div>
-                    ประวัติธุรกรรม
-                </h2>
-                <div id="historyList" class="space-y-3">
-                    <p class="text-slate-500 text-xs text-center py-4">ไม่มีประวัติ</p>
-                </div>
+                <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">📋 ประวัติธุรกรรม</h2>
+                <div id="historyList" class="space-y-3"></div>
             </div>
         </div>
 
@@ -252,12 +204,10 @@
     <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-0 left-0 w-full glass-panel !rounded-none !rounded-t-3xl border-b-0 pb-safe pt-2 px-6 flex justify-between items-center z-50">
         <div class="nav-item active" onclick="switchTab('dashboard')" id="nav-dashboard">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Home
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
         </div>
         <div class="nav-item" onclick="switchTab('invest')" id="nav-invest">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-            Invest
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Invest
         </div>
         <div class="nav-item" onclick="switchTab('add')" id="nav-add">
             <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(16,185,129,0.5)] -mt-6 transform transition active:scale-90">
@@ -265,12 +215,10 @@
             </div>
         </div>
         <div class="nav-item" onclick="switchTab('debt')" id="nav-debt">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            Debt
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Debt
         </div>
         <div class="nav-item" onclick="switchTab('legacy')" id="nav-legacy">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Legacy
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Legacy
         </div>
     </nav>
 
@@ -279,150 +227,73 @@
 
         window.onload = () => {
             const savedUrl = localStorage.getItem('scriptUrl');
-            if(savedUrl) {
-                document.getElementById('scriptUrl').value = savedUrl;
-                fetchData();
-            } else {
-                toggleSettings();
-            }
+            if(savedUrl) { document.getElementById('scriptUrl').value = savedUrl; fetchData(); } 
+            else { toggleSettings(); }
         };
 
-        function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            panel.classList.toggle('hidden');
-        }
-
+        function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('hidden'); }
         function saveSettings() {
             const url = document.getElementById('scriptUrl').value.trim();
-            if(url) {
-                localStorage.setItem('scriptUrl', url);
-                toggleSettings();
-                fetchData();
-            }
+            if(url) { localStorage.setItem('scriptUrl', url); toggleSettings(); fetchData(); }
         }
 
         function switchTab(tabId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId + 'View').classList.remove('hidden');
-            
-            if(tabId !== 'add') {
-                document.getElementById('nav-' + tabId).classList.add('active');
-            }
+            if(tabId !== 'add') document.getElementById('nav-' + tabId).classList.add('active');
         }
 
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-        }
+        function showLoading(show) { document.getElementById('loading').style.display = show ? 'block' : 'none'; }
+        function formatB(num) { return Number(num).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+        function refreshAll() { fetchData(); }
 
-        function formatB(num) {
-            return Number(num).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        }
-
-        function refreshAll() {
-            fetchData();
-        }
-
-        // ================= FETCH DATA =================
         function fetchData() {
             const url = localStorage.getItem('scriptUrl');
             if(!url) return;
             showLoading(true);
-
-            fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                showLoading(false);
-                renderDashboard(data);
-                renderLists(data);
-            })
-            .catch(err => {
-                showLoading(false);
-                alert("เชื่อมต่อล้มเหลว ตรวจสอบ URL หรือสิทธิ์ของ Apps Script");
-                console.error(err);
+            fetch(url).then(res => res.json()).then(data => {
+                showLoading(false); renderDashboard(data); renderLists(data);
+            }).catch(err => {
+                showLoading(false); alert("เชื่อมต่อล้มเหลว ตรวจสอบ URL หรืออัปเดตเวอร์ชัน Apps Script");
             });
         }
 
-        // ================= RENDER =================
         function renderDashboard(data) {
-            let expenses = {};
-            let totalInvest = 0;
-            let totalDebt = 0;
-            let totalLegacy = 0;
-            let totalCash = 0; 
-
-            // Calc Expenses & Income
+            let expenses = {}; let totalInvest = 0; let totalDebt = 0; let totalLegacy = 0; let totalCash = 0; 
             if(data.transactions) {
                 data.transactions.forEach(t => {
-                    if(t.type === 'Expense') {
-                        expenses[t.category] = (expenses[t.category] || 0) + Number(t.amount);
-                        totalCash -= Number(t.amount);
-                    } else if (t.type === 'Income') {
-                        totalCash += Number(t.amount);
-                    }
+                    if(t.type === 'Expense') { expenses[t.category] = (expenses[t.category] || 0) + Number(t.amount); totalCash -= Number(t.amount); } 
+                    else if (t.type === 'Income') { totalCash += Number(t.amount); }
                 });
             }
+            if(data.investments) data.investments.forEach(i => { totalInvest += (Number(i.qty) * Number(i.current_price)); });
+            if(data.debts) data.debts.forEach(d => { totalDebt += Number(d.remaining || d.principal); });
+            if(data.legacy) data.legacy.forEach(l => { totalLegacy += Number(l.amount); });
 
-            // Calc Invest
-            if(data.investments) {
-                data.investments.forEach(i => {
-                    totalInvest += (Number(i.qty) * Number(i.current_price));
-                });
-            }
-
-            // Calc Debt
-            if(data.debts) {
-                data.debts.forEach(d => { totalDebt += Number(d.remaining || d.principal); });
-            }
-
-            // Calc Legacy
-            if(data.legacy) {
-                data.legacy.forEach(l => { totalLegacy += Number(l.amount); });
-            }
-
-            // Net Worth ใหม่: ลงทุน + เงินสด - หนี้สิน
             let netWorth = totalInvest + totalCash - totalDebt; 
-
             document.getElementById('netWorthText').innerText = '฿' + formatB(netWorth);
             document.getElementById('totalCashText').innerText = '฿' + formatB(totalCash);
             document.getElementById('totalInvestText').innerText = '฿' + formatB(totalInvest);
             document.getElementById('totalDebtText').innerText = '฿' + formatB(totalDebt);
             document.getElementById('totalLegacyText').innerText = '฿' + formatB(totalLegacy);
-
             renderChart(expenses);
         }
 
         function renderChart(expenses) {
             const ctx = document.getElementById('expenseChart');
             if(myChart) myChart.destroy();
-            
             if(Object.keys(expenses).length === 0) return;
-
             myChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    labels: Object.keys(expenses),
-                    datasets: [{
-                        data: Object.values(expenses),
-                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    cutout: '75%'
-                }
+                data: { labels: Object.keys(expenses), datasets: [{ data: Object.values(expenses), backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'], borderWidth: 0, hoverOffset: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '75%' }
             });
         }
 
         function renderLists(data) {
-            // History
-            const histList = document.getElementById('historyList');
-            const recentList = document.getElementById('recentList');
+            const histList = document.getElementById('historyList'); const recentList = document.getElementById('recentList');
             histList.innerHTML = ''; recentList.innerHTML = '';
-            
             if(data.transactions && data.transactions.length > 0) {
                 data.transactions.forEach((t, index) => {
                     const html = `
@@ -434,161 +305,115 @@
                                 <p class="text-[10px] text-slate-500">${new Date(t.date).toLocaleDateString('th-TH')} • ${t.category}</p>
                             </div>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex flex-col items-end">
                             <p class="text-sm font-bold ${t.type==='Expense'?'text-red-400':'text-green-400'}">${t.type==='Expense'?'-':'+'}฿${formatB(t.amount)}</p>
+                            <button onclick="deleteRowData('Transactions', ${t.row})" class="mt-1 text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded cursor-pointer active:scale-95">ลบ 🗑️</button>
                         </div>
                     </div>`;
                     histList.innerHTML += html;
                     if(index < 3) recentList.innerHTML += html; 
                 });
-            }
+            } else { histList.innerHTML = '<p class="text-slate-500 text-xs text-center py-4">ไม่มีประวัติ</p>'; }
 
-            // Invest
-            const invList = document.getElementById('investList');
-            invList.innerHTML = '';
+            const invList = document.getElementById('investList'); invList.innerHTML = '';
             if(data.investments && data.investments.length > 0) {
                 data.investments.forEach(i => {
-                    let val = Number(i.qty) * Number(i.current_price);
                     invList.innerHTML += `
                     <div class="p-3 bg-slate-800/50 rounded-xl border border-blue-500/20 flex justify-between items-center">
                         <div>
                             <p class="font-bold text-blue-100">${i.ticker}</p>
                             <p class="text-xs text-slate-400">${i.qty} หน่วย</p>
                         </div>
-                        <div class="text-right">
-                            <p class="font-bold text-blue-400">฿${formatB(val)}</p>
-                            <p class="text-[10px] text-slate-500 cursor-pointer" onclick="updatePricePrompt('${i.ticker}', ${i.row})">ราคา: ${formatB(i.current_price)} ✎</p>
+                        <div class="text-right flex flex-col items-end">
+                            <p class="font-bold text-blue-400">฿${formatB(Number(i.qty) * Number(i.current_price))}</p>
+                            <div class="flex gap-2 mt-1">
+                                <span class="text-[10px] text-slate-400 bg-slate-700 px-2 py-1 rounded cursor-pointer" onclick="updatePricePrompt('${i.ticker}', ${i.row})">แก้ราคา ✎</span>
+                                <span class="text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded cursor-pointer" onclick="deleteRowData('Investment', ${i.row})">ลบ 🗑️</span>
+                            </div>
                         </div>
                     </div>`;
                 });
-            }
+            } else { invList.innerHTML = '<p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>'; }
 
-            // Debt
-            const debtList = document.getElementById('debtList');
-            debtList.innerHTML = '';
+            const debtList = document.getElementById('debtList'); debtList.innerHTML = '';
             if(data.debts && data.debts.length > 0) {
                 data.debts.forEach(d => {
                     debtList.innerHTML += `
                     <div class="p-3 bg-slate-800/50 rounded-xl border border-red-500/20">
                         <div class="flex justify-between items-center mb-2">
                             <p class="font-bold text-red-100">${d.creditor}</p>
-                            <p class="font-bold text-red-400">฿${formatB(d.remaining || d.principal)}</p>
+                            <div class="flex items-center gap-2">
+                                <p class="font-bold text-red-400">฿${formatB(d.remaining || d.principal)}</p>
+                                <button onclick="deleteRowData('Debt', ${d.row})" class="text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded">ลบ 🗑️</button>
+                            </div>
                         </div>
                         <div class="flex justify-between text-xs text-slate-400 border-t border-slate-700/50 pt-2">
-                            <p>ค่างวด: <span class="text-slate-200">฿${formatB(d.monthly_pay)}</span>/ด.</p>
+                            <p>ค่างวด: ฿${formatB(d.monthly_pay)}/ด.</p>
                             <p>ดอกเบี้ย: ${d.rate}%</p>
                         </div>
                     </div>`;
                 });
-            }
+            } else { debtList.innerHTML = '<p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>'; }
 
-            // Legacy
-            const legList = document.getElementById('legacyList');
-            legList.innerHTML = '';
+            const legList = document.getElementById('legacyList'); legList.innerHTML = '';
             if(data.legacy && data.legacy.length > 0) {
                 data.legacy.forEach(l => {
                     legList.innerHTML += `
-                    <div class="p-4 bg-slate-800/50 rounded-xl border border-indigo-500/20">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md mb-1 inline-block">${l.type}</span>
-                                <p class="font-bold text-indigo-100">${l.provider}</p>
-                            </div>
-                            <p class="font-bold text-indigo-400">฿${formatB(l.amount)}</p>
+                    <div class="p-4 bg-slate-800/50 rounded-xl border border-indigo-500/20 relative">
+                        <button onclick="deleteRowData('Legacy', ${l.row})" class="absolute top-4 right-4 text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded">ลบ 🗑️</button>
+                        <div class="mb-2">
+                            <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md mb-1 inline-block">${l.type}</span>
+                            <p class="font-bold text-indigo-100">${l.provider}</p>
+                            <p class="font-bold text-indigo-400 mt-1">฿${formatB(l.amount)}</p>
                         </div>
                         <div class="text-xs text-slate-400 mt-2 space-y-1">
                             <p>เลขที่: <span class="text-slate-300">${l.policy}</span></p>
-                            <p>ผู้รับผลประโยชน์: <span class="text-slate-300">${l.beneficiary}</span></p>
-                            ${l.note ? `<p class="mt-2 text-indigo-200/70 italic border-l-2 border-indigo-500/50 pl-2">${l.note}</p>` : ''}
+                            <p>ผู้รับ: <span class="text-slate-300">${l.beneficiary}</span></p>
                         </div>
                     </div>`;
                 });
-            }
+            } else { legList.innerHTML = '<p class="text-slate-500 text-xs text-center py-4">ไม่มีข้อมูล</p>'; }
         }
 
         // ================= ACTIONS =================
         function postData(payload) {
             const url = localStorage.getItem('scriptUrl');
             showLoading(true);
-            fetch(url, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            }).then(() => {
-                setTimeout(() => {
-                    showLoading(false);
-                    alert("บันทึกสำเร็จ!");
-                    fetchData(); 
-                }, 1500);
-            }).catch(e => {
-                showLoading(false);
-                alert("เกิดข้อผิดพลาด");
-            });
+            fetch(url, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) })
+            .then(() => { setTimeout(() => { showLoading(false); fetchData(); }, 1500); })
+            .catch(e => { showLoading(false); alert("เกิดข้อผิดพลาด"); });
+        }
+
+        function deleteRowData(sheetName, rowId) {
+            if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? (ลบแล้วกู้คืนไม่ได้นะ)')) {
+                postData({ sheet: sheetName, action: "delete", row: rowId });
+            }
         }
 
         function saveData() {
-            postData({
-                sheet: "Transactions", action: "add",
-                data: {
-                    item: document.getElementById('item').value,
-                    category: document.getElementById('category').value,
-                    amount: document.getElementById('amount').value,
-                    type: document.getElementById('type').value
-                }
-            });
-            document.getElementById('item').value = '';
-            document.getElementById('amount').value = '';
+            postData({ sheet: "Transactions", action: "add", data: { item: document.getElementById('item').value, category: document.getElementById('category').value, amount: document.getElementById('amount').value, type: document.getElementById('type').value }});
+            document.getElementById('item').value = ''; document.getElementById('amount').value = '';
         }
 
         function saveDebt() {
-            postData({
-                sheet: "Debt", action: "add",
-                data: {
-                    creditor: document.getElementById('d_creditor').value,
-                    principal: document.getElementById('d_principal').value,
-                    rate: document.getElementById('d_rate').value,
-                    months: document.getElementById('d_months').value
-                }
-            });
+            postData({ sheet: "Debt", action: "add", data: { creditor: document.getElementById('d_creditor').value, principal: document.getElementById('d_principal').value, rate: document.getElementById('d_rate').value, months: document.getElementById('d_months').value }});
             document.getElementById('addDebtForm').classList.add('hidden');
         }
 
         function saveLegacy() {
-            postData({
-                sheet: "Legacy", action: "add",
-                data: {
-                    type: document.getElementById('l_type').value,
-                    provider: document.getElementById('l_provider').value,
-                    policy: document.getElementById('l_policy').value,
-                    amount: document.getElementById('l_amount').value,
-                    beneficiary: document.getElementById('l_beneficiary').value,
-                    note: document.getElementById('l_note').value
-                }
-            });
+            postData({ sheet: "Legacy", action: "add", data: { type: document.getElementById('l_type').value, provider: document.getElementById('l_provider').value, policy: document.getElementById('l_policy').value, amount: document.getElementById('l_amount').value, beneficiary: document.getElementById('l_beneficiary').value, note: document.getElementById('l_note').value }});
             document.getElementById('addLegacyForm').classList.add('hidden');
         }
 
         function promptAddInvest() {
-            let ticker = prompt("กรอกชื่อหุ้น/กองทุน (เช่น BKK:PTT หรือ AAPL)");
-            if(!ticker) return;
-            let qty = prompt("จำนวนหน่วย (เช่น 100)");
-            if(!qty) return;
-            
-            postData({
-                sheet: "Investment", action: "add",
-                data: { ticker: ticker.toUpperCase(), qty: qty, price: 0 }
-            });
+            let ticker = prompt("กรอกชื่อหุ้น/กองทุน (เช่น BKK:PTT, EPA:SU หรือ AAPL)");
+            if(!ticker) return; let qty = prompt("จำนวนหน่วย (เช่น 100)"); if(!qty) return;
+            postData({ sheet: "Investment", action: "add", data: { ticker: ticker.toUpperCase(), qty: qty, price: 0 }});
         }
 
         function updatePricePrompt(ticker, row) {
             let p = prompt(`อัปเดตราคา ${ticker} ด้วยตัวเอง:`);
-            if(p) {
-                postData({
-                    sheet: "Investment", action: "update_price",
-                    row: row, price: p
-                });
-            }
+            if(p) postData({ sheet: "Investment", action: "update_price", row: row, price: p });
         }
     </script>
 </body>
