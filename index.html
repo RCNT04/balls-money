@@ -30,7 +30,7 @@
         <header class="flex justify-between items-center mb-6 animate-fade-in">
             <div>
                 <h1 class="text-2xl font-bold text-white tracking-tight">Ball's Money <span class="text-xl">⚽💰</span></h1>
-                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Ultimate Version (THB/USD/EUR)</p>
+                <p class="text-green-400 text-[10px] uppercase tracking-widest font-bold mt-1">● Dashboard Refined (V9)</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="refreshAll()" class="p-3 bg-slate-800/80 rounded-full text-blue-400 backdrop-blur-md active:rotate-180 transition-transform">
@@ -53,40 +53,44 @@
         </div>
 
         <div id="loading" class="text-xs text-green-400 text-center mb-4 hidden animate-pulse font-semibold tracking-wider">
-            ⟳ กำลังเชื่อมต่อฐานข้อมูล...
+            ⟳ กำลังประมวลผลข้อมูล...
         </div>
 
         <!-- MAIN DASHBOARD -->
         <div id="dashboardView" class="view-section animate-fade-in block">
+            <!-- 🌟 ปรับปรุง Net Worth Card ใหม่ -->
             <div class="glass-panel p-6 mb-6 text-center relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase mb-1">ความมั่งคั่งสุทธิ (Net Worth)</p>
-                <h2 id="netWorthText" class="text-4xl font-bold text-white tracking-tight">฿0.00</h2>
                 
-                <div class="flex justify-center gap-5 mt-4 pt-4 border-t border-slate-700/50">
-                    <div>
-                        <p class="text-[10px] text-slate-500 uppercase mb-1">เงินสด</p>
-                        <p id="totalCashText" class="text-green-400 font-bold">฿0.00</p>
+                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-1">ความมั่งคั่งสุทธิ (Net Worth)</p>
+                <h2 id="netWorthText" class="text-4xl font-bold text-white tracking-tight mb-6">฿0.00</h2>
+                
+                <!-- 🌟 เปลี่ยนจากแถวเดียวเป็น Grid 2x2 เพื่อไม่ให้ตัวเลขล้น -->
+                <div class="grid grid-cols-2 gap-4 mt-2 pt-5 border-t border-slate-700/50">
+                    <div class="text-left pl-2 border-r border-slate-700/50">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1 tracking-wider">💰 เงินสดสะสม</p>
+                        <p id="totalCashText" class="text-sm font-bold text-green-400">฿0.00</p>
                     </div>
-                    <div>
-                        <p class="text-[10px] text-slate-500 uppercase mb-1">การลงทุน</p>
-                        <p id="totalInvestText" class="text-blue-400 font-bold">฿0.00</p>
+                    <div class="text-right pr-2">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1 tracking-wider">📈 พอร์ตลงทุน</p>
+                        <p id="totalInvestText" class="text-sm font-bold text-blue-400">฿0.00</p>
                     </div>
-                    <div>
-                        <p class="text-[10px] text-slate-500 uppercase mb-1">หนี้สิน</p>
-                        <p id="totalDebtText" class="text-red-400 font-bold">฿0.00</p>
+                    <div class="text-left pl-2 border-r border-slate-700/50">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1 tracking-wider">💸 หนี้สินรวม</p>
+                        <p id="totalDebtText" class="text-sm font-bold text-red-400">฿0.00</p>
+                    </div>
+                    <div class="text-right pr-2">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1 tracking-wider">🛡️ มูลค่ามรดก</p>
+                        <p id="totalLegacyText" class="text-sm font-bold text-indigo-300">฿0.00</p>
                     </div>
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="glass-panel p-4 flex flex-col justify-center items-center">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-2">สัดส่วนรายจ่ายเดือนนี้</p>
-                    <div class="w-full h-32 relative"><canvas id="expenseChart"></canvas></div>
-                </div>
-                <div class="glass-panel p-4 flex flex-col justify-center text-center bg-gradient-to-br from-indigo-900/40 to-slate-900/60">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">ส่งต่อมรดก (Legacy)</p>
-                    <p id="totalLegacyText" class="text-lg font-bold text-indigo-300 mt-1">฿0.00</p>
+            <div class="grid grid-cols-1 gap-4 mb-6">
+                <!-- กราฟรายจ่าย ย้ายมาไว้เดี่ยวๆ ให้ดูง่ายขึ้น -->
+                <div class="glass-panel p-5 flex flex-col items-center">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-3">สัดส่วนรายจ่ายเดือนนี้</p>
+                    <div class="w-full h-40 relative"><canvas id="expenseChart"></canvas></div>
                 </div>
             </div>
 
@@ -144,7 +148,7 @@
         <div id="investView" class="view-section animate-fade-in hidden">
             <div class="glass-panel p-6">
                 <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">📈 พอร์ตการลงทุน</h2>
-                <p class="text-[10px] text-slate-400 mb-6">หุ้นไทยใส่ BKK: | ฝรั่งเศสใส่ EPA: | อื่นๆ/คริปโต (เช่น AAPL) ใส่ปกติ</p>
+                <p class="text-[10px] text-slate-400 mb-6">หุ้นไทยใส่ BKK: | ฝรั่งเศสใส่ EPA: | อื่นๆ/คริปโต ใส่ปกติ</p>
                 <div id="investList" class="space-y-3 mb-6"></div>
                 <button onclick="promptAddInvest()" class="w-full bg-slate-800 text-blue-400 border border-blue-500/30 py-3 rounded-xl font-bold text-sm">+ เพิ่มสินทรัพย์</button>
             </div>
@@ -255,7 +259,7 @@
             fetch(url).then(res => res.json()).then(data => {
                 showLoading(false); renderDashboard(data); renderLists(data);
             }).catch(err => {
-                showLoading(false); alert("เชื่อมต่อล้มเหลว ตรวจสอบ URL หรืออัปเดตเวอร์ชัน Apps Script");
+                showLoading(false); alert("เชื่อมต่อล้มเหลว ตรวจสอบ URL หรือ Apps Script");
             });
         }
 
@@ -287,7 +291,7 @@
             myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: { labels: Object.keys(expenses), datasets: [{ data: Object.values(expenses), backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'], borderWidth: 0, hoverOffset: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '75%' }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
             });
         }
 
@@ -307,7 +311,7 @@
                         </div>
                         <div class="text-right flex flex-col items-end">
                             <p class="text-sm font-bold ${t.type==='Expense'?'text-red-400':'text-green-400'}">${t.type==='Expense'?'-':'+'}฿${formatB(t.amount)}</p>
-                            <button onclick="deleteRowData('Transactions', ${t.row})" class="mt-1 text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded cursor-pointer active:scale-95">ลบ 🗑️</button>
+                            <button onclick="deleteRowData('Transactions', ${t.row})" class="mt-1 text-[9px] text-red-400 bg-red-500/10 px-2 py-0.5 rounded cursor-pointer active:scale-95">ลบ 🗑️</button>
                         </div>
                     </div>`;
                     histList.innerHTML += html;
@@ -327,8 +331,8 @@
                         <div class="text-right flex flex-col items-end">
                             <p class="font-bold text-blue-400">฿${formatB(Number(i.qty) * Number(i.current_price))}</p>
                             <div class="flex gap-2 mt-1">
-                                <span class="text-[10px] text-slate-400 bg-slate-700 px-2 py-1 rounded cursor-pointer" onclick="updatePricePrompt('${i.ticker}', ${i.row})">แก้ราคา ✎</span>
-                                <span class="text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded cursor-pointer" onclick="deleteRowData('Investment', ${i.row})">ลบ 🗑️</span>
+                                <span class="text-[9px] text-slate-400 bg-slate-700 px-2 py-0.5 rounded cursor-pointer" onclick="updatePricePrompt('${i.ticker}', ${i.row})">แก้ราคา ✎</span>
+                                <span class="text-[9px] text-red-400 bg-red-500/10 px-2 py-0.5 rounded cursor-pointer" onclick="deleteRowData('Investment', ${i.row})">ลบ 🗑️</span>
                             </div>
                         </div>
                     </div>`;
@@ -344,7 +348,7 @@
                             <p class="font-bold text-red-100">${d.creditor}</p>
                             <div class="flex items-center gap-2">
                                 <p class="font-bold text-red-400">฿${formatB(d.remaining || d.principal)}</p>
-                                <button onclick="deleteRowData('Debt', ${d.row})" class="text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded">ลบ 🗑️</button>
+                                <button onclick="deleteRowData('Debt', ${d.row})" class="text-[9px] text-red-400 bg-red-500/10 px-2 py-0.5 rounded">ลบ 🗑️</button>
                             </div>
                         </div>
                         <div class="flex justify-between text-xs text-slate-400 border-t border-slate-700/50 pt-2">
@@ -360,7 +364,7 @@
                 data.legacy.forEach(l => {
                     legList.innerHTML += `
                     <div class="p-4 bg-slate-800/50 rounded-xl border border-indigo-500/20 relative">
-                        <button onclick="deleteRowData('Legacy', ${l.row})" class="absolute top-4 right-4 text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded">ลบ 🗑️</button>
+                        <button onclick="deleteRowData('Legacy', ${l.row})" class="absolute top-4 right-4 text-[9px] text-red-400 bg-red-500/10 px-2 py-0.5 rounded">ลบ 🗑️</button>
                         <div class="mb-2">
                             <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md mb-1 inline-block">${l.type}</span>
                             <p class="font-bold text-indigo-100">${l.provider}</p>
@@ -385,13 +389,16 @@
         }
 
         function deleteRowData(sheetName, rowId) {
-            if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? (ลบแล้วกู้คืนไม่ได้นะ)')) {
+            if(confirm('ยืนยันการลบรายการนี้?')) {
                 postData({ sheet: sheetName, action: "delete", row: rowId });
             }
         }
 
         function saveData() {
-            postData({ sheet: "Transactions", action: "add", data: { item: document.getElementById('item').value, category: document.getElementById('category').value, amount: document.getElementById('amount').value, type: document.getElementById('type').value }});
+            const itm = document.getElementById('item').value;
+            const amt = document.getElementById('amount').value;
+            if(!itm || !amt) { alert("กรุณากรอกข้อมูลให้ครบ"); return; }
+            postData({ sheet: "Transactions", action: "add", data: { item: itm, category: document.getElementById('category').value, amount: amt, type: document.getElementById('type').value }});
             document.getElementById('item').value = ''; document.getElementById('amount').value = '';
         }
 
@@ -406,13 +413,13 @@
         }
 
         function promptAddInvest() {
-            let ticker = prompt("กรอกชื่อหุ้น/กองทุน (เช่น BKK:PTT, EPA:SU หรือ AAPL)");
-            if(!ticker) return; let qty = prompt("จำนวนหน่วย (เช่น 100)"); if(!qty) return;
+            let ticker = prompt("รหัสหุ้น (BKK:PTT, EPA:SU, AAPL)");
+            if(!ticker) return; let qty = prompt("จำนวนหน่วย"); if(!qty) return;
             postData({ sheet: "Investment", action: "add", data: { ticker: ticker.toUpperCase(), qty: qty, price: 0 }});
         }
 
         function updatePricePrompt(ticker, row) {
-            let p = prompt(`อัปเดตราคา ${ticker} ด้วยตัวเอง:`);
+            let p = prompt(`อัปเดตราคา ${ticker}:`);
             if(p) postData({ sheet: "Investment", action: "update_price", row: row, price: p });
         }
     </script>
