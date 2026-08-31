@@ -52,7 +52,8 @@
             <div>
                 <input type="password" id="passInput" maxlength="12" placeholder="กรอกรหัสผ่าน" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl font-bold tracking-widest text-emerald-400 focus:outline-none focus:border-emerald-500 shadow-inner">
             </div>
-            <p id="passError" class="text-xs text-rose-400 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i>รหัสผ่านไม่ถูกต้อง (รหัสผ่านคือ 15132076)</p>
+
+            <p id="passError" class="text-xs text-rose-400 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i>รหัสผ่านไม่ถูกต้อง</p>
             
             <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl shadow-lg shadow-emerald-950 transition-all text-sm active:scale-95">
                 เข้าสู่ Dashboard
@@ -110,7 +111,7 @@
         <div id="api-alert-banner" class="mx-4 mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-300 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
-                <span>ยังไม่ได้ใส่ Web App URL (ใช้ข้อมูลเริ่มต้น)</span>
+                <span>ยังไม่ได้เชื่อมต่อ Google Sheet (ใช้ข้อมูลเริ่มต้น)</span>
             </div>
             <button onclick="openModal('apiConfigModal')" class="underline font-bold text-amber-400 hover:text-amber-300">ตั้งค่าเลย</button>
         </div>
@@ -249,6 +250,16 @@
                 </ul>
             </div>
 
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="closeModal('rolloverModal')" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-medium">ยกเลิก</button>
+                <button type="button" id="confirmRolloverBtn" onclick="executeAutoRollover()" class="w-1/2 bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-amber-950 flex items-center justify-center gap-1.5">
+                    <span id="rolloverBtnText">ยืนยัน Auto</span>
+                    <i id="rolloverSpinner" class="fa-solid fa-spinner animate-spin hidden"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: Add New Expense / Income -->
     <div id="addItemModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-5 space-y-4 text-xs">
@@ -369,6 +380,97 @@
 
     <script>
         const CORRECT_PASS = "15132076";
+
+        // Initial Seeded Data matching the user's Google Sheet
+        const defaultItems = [
+            { id: 'inc_1', name: 'Salary', type: 'รายได้', debt: 0, interest: 0, monthly: 42000, months: 0 },
+            { id: 'inc_2', name: 'ค่าเช่าคอนโด', type: 'รายได้', debt: 0, interest: 0, monthly: 4500, months: 0 },
+            { id: 'inc_3', name: 'เบิก', type: 'รายได้', debt: 0, interest: 0, monthly: 4000, months: 0 },
+            { id: 'exp_1', name: 'TTB 1', type: 'รายจ่าย', debt: 10000, interest: 0, monthly: 1000, months: 10 },
+            { id: 'exp_2', name: 'TTB 2', type: 'รายจ่าย', debt: 9000, interest: 0, monthly: 1000, months: 9 },
+            { id: 'exp_3', name: 'TTB 3', type: 'รายจ่าย', debt: 8000, interest: 0, monthly: 1000, months: 8 },
+            { id: 'exp_4', name: 'ผ่อนรถ', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 0, months: 0 },
+            { id: 'exp_5', name: 'คอนโดแอสปาย', type: 'รายจ่าย', debt: 1521000, interest: 340377, monthly: 9300, months: 200 },
+            { id: 'exp_6', name: 'เสริมคอนโดแอสปาย', type: 'รายจ่าย', debt: 26860, interest: 1019, monthly: 800, months: 35 },
+            { id: 'exp_7', name: 'คอนโดลุมพินี', type: 'รายจ่าย', debt: 765872, interest: 155948, monthly: 4000, months: 230 },
+            { id: 'exp_8', name: 'ผ่อนโทรศัพท์', type: 'รายจ่าย', debt: 21724, interest: 0, monthly: 988, months: 22 },
+            { id: 'exp_9', name: 'Shopee', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1400, months: 0 },
+            { id: 'exp_10', name: 'ค่าไฟ', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 750, months: 0 },
+            { id: 'exp_11', name: 'ทางด่วน', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 360, months: 0 },
+            { id: 'exp_12', name: 'น้ำมัน', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 6000, months: 0 },
+            { id: 'exp_13', name: 'ค่าโทรศัพท์', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 700, months: 0 },
+            { id: 'exp_14', name: 'จอดมอเตอร์ไซค์', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 500, months: 0 },
+            { id: 'exp_15', name: 'Platinum', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1000, months: 0 },
+            { id: 'exp_16', name: 'First choice', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1000, months: 0 },
+            { id: 'exp_17', name: 'พี่หนุ่ม', type: 'รายจ่าย', debt: 150000, interest: 0, monthly: 10000, months: 15 },
+            { id: 'exp_18', name: 'ก้อย', type: 'รายจ่าย', debt: 45000, interest: 0, monthly: 0, months: 0 }
+        ];
+
+        let currentItems = [...defaultItems];
+        let currentFilter = 'all';
+        let budgetChartInstance = null;
+
+        function autoFillPass() {
+            document.getElementById('passInput').value = CORRECT_PASS;
+        }
+
+        function checkPassword(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('passInput').value.trim();
+            const errEl = document.getElementById('passError');
+            if (input === CORRECT_PASS) {
+                sessionStorage.setItem('ball_money_authed', 'true');
+                document.getElementById('lockScreen').classList.add('hidden');
+                errEl.classList.add('hidden');
+                document.getElementById('passInput').value = '';
+                fetchSheetData(false);
+            } else {
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        function lockApp() {
+            sessionStorage.removeItem('ball_money_authed');
+            document.getElementById('lockScreen').classList.remove('hidden');
+            document.getElementById('passInput').value = '';
+            document.getElementById('passInput').focus();
+        }
+
+        function checkAuthStatus() {
+            if (sessionStorage.getItem('ball_money_authed') === 'true') {
+                document.getElementById('lockScreen').classList.add('hidden');
+            } else {
+                document.getElementById('lockScreen').classList.remove('hidden');
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showToast(msg, isErr = false) {
+            const toast = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastText = document.getElementById('toastText');
+            
+            toastText.textContent = msg;
+            if (isErr) {
+                toastIcon.className = "fa-solid fa-circle-exclamation text-rose-400";
+                toast.className = "fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-rose-500/40 text-slate-100 px-4 py-2.5 rounded-xl shadow-xl text-xs flex items-center gap-2 z-50 transition-opacity duration-300 opacity-100";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+                toast.className = "fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-emerald-500/40 text-slate-100 px-4 py-2.5 rounded-xl shadow-xl text-xs flex items-center gap-2 z-50 transition-opacity duration-300 opacity-100";
+            }
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2800);
+        }
+
         function toggleDebtInputs(show) {
             const container = document.getElementById('debt-fields-container');
             if (show) {
@@ -415,12 +517,11 @@
                     const textRes = await response.text();
                     
                     let result;
-                    try { result = JSON.parse(textRes); } catch(e){}
+                    try { result = JSON.parse(textRes); } catch(err){}
 
                     if (result && result.status === 'success') {
                         showToast(`เพิ่มรายการ "${name}" ลง Google Sheet แล้ว!`);
                         closeModal('addItemModal');
-                        // Clear form
                         document.getElementById('add-item-name').value = '';
                         document.getElementById('add-item-monthly').value = '';
                         document.getElementById('add-has-debt').checked = false;
@@ -535,7 +636,6 @@
 
             if (apiUrl) {
                 try {
-                    // ใช้ GET parameter เพื่อหลีกเลี่ยงปัญหา CORS ในการส่งคำสั่ง POST
                     const rolloverUrl = apiUrl + (apiUrl.includes('?') ? '&' : '?') + 'action=ROLL_OVER';
                     const response = await fetch(rolloverUrl, { redirect: 'follow' });
                     const textRes = await response.text();
