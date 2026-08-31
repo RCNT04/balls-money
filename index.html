@@ -81,6 +81,11 @@
                 </div>
             </div>
             <div class="flex items-center gap-1">
+                <!-- Add Item Button -->
+                <button onclick="openModal('addItemModal')" class="p-2 text-emerald-400 hover:text-emerald-300 transition-colors rounded-lg hover:bg-slate-800 flex items-center gap-1 text-xs font-semibold" title="เพิ่มรายการ">
+                    <i class="fa-solid fa-plus text-sm"></i>
+                    <span class="hidden sm:inline">เพิ่มรายการ</span>
+                </button>
                 <!-- Auto Roll-Over Button -->
                 <button onclick="openModal('rolloverModal')" class="p-2 text-amber-400 hover:text-amber-300 transition-colors rounded-lg hover:bg-slate-800 flex items-center gap-1 text-xs font-semibold" title="ขึ้นเดือนใหม่ Auto">
                     <i class="fa-solid fa-calendar-plus text-sm"></i>
@@ -244,13 +249,71 @@
                 </ul>
             </div>
 
-            <div class="flex gap-2 pt-2">
-                <button type="button" onclick="closeModal('rolloverModal')" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-medium">ยกเลิก</button>
-                <button type="button" id="confirmRolloverBtn" onclick="executeAutoRollover()" class="w-1/2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold py-3 rounded-xl shadow-lg shadow-amber-950/50 flex items-center justify-center gap-1.5">
-                    <span id="rolloverBtnText">ยืนยัน Auto</span>
-                    <i id="rolloverSpinner" class="fa-solid fa-spinner animate-spin hidden"></i>
+    <!-- MODAL: Add New Expense / Income -->
+    <div id="addItemModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-5 space-y-4 text-xs">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-slate-100 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-emerald-400"></i> เพิ่มรายการใหม่
+                </h3>
+                <button onclick="closeModal('addItemModal')" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
+
+            <form onsubmit="executeAddItem(event)" class="space-y-3">
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1">ชื่อรายการ <span class="text-rose-400">*</span></label>
+                    <input type="text" id="add-item-name" required placeholder="เช่น ค่ากาแฟ, ค่าซ่อมรถ, โบนัส" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-300 font-medium mb-1">ประเภท <span class="text-rose-400">*</span></label>
+                        <select id="add-item-type" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+                            <option value="รายจ่าย">รายจ่าย</option>
+                            <option value="รายได้">รายได้</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-medium mb-1">จำนวนเงิน/เดือน <span class="text-rose-400">*</span></label>
+                        <input type="number" id="add-item-monthly" required step="any" placeholder="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 font-mono">
+                    </div>
+                </div>
+
+                <!-- Toggle Has Debt Details -->
+                <div class="pt-2 border-t border-slate-800">
+                    <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                        <input type="checkbox" id="add-has-debt" onchange="toggleDebtInputs(this.checked)" class="w-4 h-4 rounded accent-emerald-500">
+                        <span class="font-semibold text-amber-400">มีภาระหนี้สินผ่อนชำระ</span>
+                    </label>
+                </div>
+
+                <div id="debt-fields-container" class="space-y-2 hidden bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                    <div>
+                        <label class="block text-slate-400 text-[11px] mb-0.5">เงินต้นคงเหลือ (บาท):</label>
+                        <input type="number" id="add-item-debt" step="any" placeholder="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 font-mono">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-slate-400 text-[11px] mb-0.5">ดอกเบี้ยรวม (บาท):</label>
+                            <input type="number" id="add-item-interest" step="any" placeholder="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[11px] mb-0.5">จำนวนงวดผ่อน:</label>
+                            <input type="number" id="add-item-months" placeholder="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 font-mono">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeModal('addItemModal')" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-medium">ยกเลิก</button>
+                    <button type="submit" id="submitAddItemBtn" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-950 flex items-center justify-center gap-1.5">
+                        <span id="addItemBtnText">บันทึกรายการ</span>
+                        <i id="addItemSpinner" class="fa-solid fa-spinner animate-spin hidden"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -306,89 +369,90 @@
 
     <script>
         const CORRECT_PASS = "15132076";
-        
-        // Initial Seeded Data from the user's Sheet
-        const defaultItems = [
-            { id: 'inc_1', name: 'Salary', type: 'รายได้', debt: 0, interest: 0, monthly: 42000, months: 0 },
-            { id: 'inc_2', name: 'ค่าเช่าคอนโด', type: 'รายได้', debt: 0, interest: 0, monthly: 4500, months: 0 },
-            { id: 'inc_3', name: 'เบิก', type: 'รายได้', debt: 0, interest: 0, monthly: 4000, months: 0 },
-            { id: 'exp_1', name: 'TTB 1', type: 'รายจ่าย', debt: 10000, interest: 0, monthly: 1000, months: 10 },
-            { id: 'exp_2', name: 'TTB 2', type: 'รายจ่าย', debt: 9000, interest: 0, monthly: 1000, months: 9 },
-            { id: 'exp_3', name: 'TTB 3', type: 'รายจ่าย', debt: 8000, interest: 0, monthly: 1000, months: 8 },
-            { id: 'exp_4', name: 'ผ่อนรถ', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 0, months: 0 },
-            { id: 'exp_5', name: 'คอนโดแอสปาย', type: 'รายจ่าย', debt: 1521000, interest: 340377, monthly: 9300, months: 200 },
-            { id: 'exp_6', name: 'เสริมคอนโดแอสปาย', type: 'รายจ่าย', debt: 26860, interest: 1019, monthly: 800, months: 35 },
-            { id: 'exp_7', name: 'คอนโดลุมพินี', type: 'รายจ่าย', debt: 765872, interest: 155948, monthly: 4000, months: 230 },
-            { id: 'exp_8', name: 'ผ่อนโทรศัพท์', type: 'รายจ่าย', debt: 21724, interest: 0, monthly: 988, months: 22 },
-            { id: 'exp_9', name: 'Shopee', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1400, months: 0 },
-            { id: 'exp_10', name: 'ค่าไฟ', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 750, months: 0 },
-            { id: 'exp_11', name: 'ทางด่วน', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 360, months: 0 },
-            { id: 'exp_12', name: 'น้ำมัน', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 6000, months: 0 },
-            { id: 'exp_13', name: 'ค่าโทรศัพท์', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 700, months: 0 },
-            { id: 'exp_14', name: 'จอดมอเตอร์ไซค์', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 500, months: 0 },
-            { id: 'exp_15', name: 'Platinum', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1000, months: 0 },
-            { id: 'exp_16', name: 'First choice', type: 'รายจ่าย', debt: 0, interest: 0, monthly: 1000, months: 0 },
-            { id: 'exp_17', name: 'พี่หนุ่ม', type: 'รายจ่าย', debt: 150000, interest: 0, monthly: 10000, months: 15 },
-            { id: 'exp_18', name: 'ก้อย', type: 'รายจ่าย', debt: 45000, interest: 0, monthly: 0, months: 0 }
-        ];
+        function toggleDebtInputs(show) {
+            const container = document.getElementById('debt-fields-container');
+            if (show) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
 
-        let currentItems = [...defaultItems];
-        let currentFilter = 'all';
-        let budgetChartInstance = null;
-
-        function checkPassword(e) {
+        async function executeAddItem(e) {
             if (e) e.preventDefault();
-            const input = document.getElementById('passInput').value;
-            const errEl = document.getElementById('passError');
-            if (input === CORRECT_PASS) {
-                sessionStorage.setItem('ball_money_authed', 'true');
-                document.getElementById('lockScreen').classList.add('hidden');
-                errEl.classList.add('hidden');
-                document.getElementById('passInput').value = '';
-                fetchSheetData(false);
-            } else {
-                errEl.classList.remove('hidden');
-            }
-        }
-
-        function lockApp() {
-            sessionStorage.removeItem('ball_money_authed');
-            document.getElementById('lockScreen').classList.remove('hidden');
-            document.getElementById('passInput').value = '';
-            document.getElementById('passInput').focus();
-        }
-
-        function checkAuthStatus() {
-            if (sessionStorage.getItem('ball_money_authed') === 'true') {
-                document.getElementById('lockScreen').classList.add('hidden');
-            } else {
-                document.getElementById('lockScreen').classList.remove('hidden');
-            }
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toastMessage');
-            const icon = document.getElementById('toastIcon');
-            document.getElementById('toastText').textContent = msg;
             
-            if (isError) {
-                icon.className = 'fa-solid fa-circle-xmark text-rose-400';
-            } else {
-                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            const name = document.getElementById('add-item-name').value.trim();
+            const type = document.getElementById('add-item-type').value;
+            const monthly = parseFloat(document.getElementById('add-item-monthly').value) || 0;
+            const hasDebt = document.getElementById('add-has-debt').checked;
+            
+            const debt = hasDebt ? (parseFloat(document.getElementById('add-item-debt').value) || 0) : 0;
+            const interest = hasDebt ? (parseFloat(document.getElementById('add-item-interest').value) || 0) : 0;
+            const months = hasDebt ? (parseInt(document.getElementById('add-item-months').value) || 0) : 0;
+
+            if (!name || monthly <= 0) {
+                showToast('กรุณากรอกชื่อรายการและจำนวนเงินให้ถูกต้อง', true);
+                return;
             }
 
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 3500);
+            const btnText = document.getElementById('addItemBtnText');
+            const spinner = document.getElementById('addItemSpinner');
+            const btn = document.getElementById('submitAddItemBtn');
+
+            btnText.textContent = 'กำลังบันทึก...';
+            spinner.classList.remove('hidden');
+            btn.disabled = true;
+
+            let apiUrl = localStorage.getItem('ball_money_api_url') || '';
+            apiUrl = apiUrl.trim();
+
+            if (apiUrl) {
+                try {
+                    const addUrl = apiUrl + (apiUrl.includes('?') ? '&' : '?') + 
+                        `action=ADD_ITEM&name=${encodeURIComponent(name)}&type=${encodeURIComponent(type)}&monthly=${monthly}&debt=${debt}&interest=${interest}&months=${months}`;
+                    
+                    const response = await fetch(addUrl, { redirect: 'follow' });
+                    const textRes = await response.text();
+                    
+                    let result;
+                    try { result = JSON.parse(textRes); } catch(e){}
+
+                    if (result && result.status === 'success') {
+                        showToast(`เพิ่มรายการ "${name}" ลง Google Sheet แล้ว!`);
+                        closeModal('addItemModal');
+                        // Clear form
+                        document.getElementById('add-item-name').value = '';
+                        document.getElementById('add-item-monthly').value = '';
+                        document.getElementById('add-has-debt').checked = false;
+                        toggleDebtInputs(false);
+                        fetchSheetData(false);
+                        return;
+                    }
+                } catch (err) {
+                    console.error('Add item API error:', err);
+                }
+            }
+
+            // Fallback Local Storage addition if API not connected
+            const newItem = {
+                id: 'custom_' + Date.now(),
+                name: name,
+                type: type,
+                debt: debt,
+                interest: interest,
+                monthly: monthly,
+                months: months
+            };
+
+            currentItems.push(newItem);
+            localStorage.setItem('ball_money_cached_data', JSON.stringify(currentItems));
+            renderData(currentItems);
+            closeModal('addItemModal');
+            showToast(`เพิ่มรายการ "${name}" เรียบร้อยแล้ว (โหมดออฟไลน์)`);
+
+            btnText.textContent = 'บันทึกรายการ';
+            spinner.classList.add('hidden');
+            btn.disabled = false;
         }
 
         async function fetchSheetData(isManual = false) {
